@@ -36,4 +36,4 @@ spec:
           service:
             name: echoserver3-service
             port:
-              number: 80              
+              number: 80
