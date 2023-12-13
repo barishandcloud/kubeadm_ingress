@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: echotest
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver1
+  namespace: echotest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver1
+  template:
+    metadata:
+      labels:
+        app: echoserver1
+    spec:
+      containers:
+      - name: echoserver1
+        image: hashicorp/http-echo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5678
+        args:
+        - "-text=echoserver1"
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: echoserver1-service
+  namespace: echotest
+spec:
+  selector:
+    app: echoserver1
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5678
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver2
+  namespace: echotest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver2
+  template:
+    metadata:
+      labels:
+        app: echoserver2
+    spec:
+      containers:
+      - name: echoserver2
+        image: hashicorp/http-echo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5678
+        args:
+        - "-text=echoserver2"
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: echoserver2-service
+  namespace: echotest
+spec:
+  selector:
+    app: echoserver2
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5678
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoserver3
+  namespace: echotest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoserver3
+  template:
+    metadata:
+      labels:
+        app: echoserver3
+    spec:
+      containers:
+      - name: echoserver3
+        image: hashicorp/http-echo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5678
+        args:
+        - "-text=echoserver3"
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: echoserver3-service
+  namespace: echotest
+spec:
+  selector:
+    app: echoserver3
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5678      

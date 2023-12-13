@@ -1,0 +1,24 @@
+#kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e "s/strictARP: false/strictARP: true/" | kubectl apply -f - -n kube-system
+#kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/manifests/metallb-native.yaml
+
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: first-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.56.200-192.168.56.250
+---
+
+#https://forums.rancher.com/t/lb-ip-exposed-not-accessible/39604/3
+#https://github.com/metallb/metallb/issues/1154
+
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2adv
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - first-pool

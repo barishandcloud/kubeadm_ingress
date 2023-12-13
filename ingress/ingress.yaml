@@ -1,0 +1,39 @@
+#https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: echotest-ingress
+  namespace: echotest
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /echoserver1
+        pathType: Prefix
+        backend:
+          service:
+            name: echoserver1-service
+            port:
+              number: 80
+  - http:
+      paths:
+      - path: /echoserver2
+        pathType: Prefix
+        backend:
+          service:
+            name: echoserver2-service
+            port:
+              number: 80
+  - http:
+      paths:
+      - path: /echoserver3
+        pathType: Prefix
+        backend:
+          service:
+            name: echoserver3-service
+            port:
+              number: 80              
